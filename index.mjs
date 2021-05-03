@@ -7,19 +7,23 @@ import mongoose from 'mongoose';
 import { createProfile } from './src/lib/services/ProfileService.mjs';
 import { like, createItem } from './src/lib/services/ItemService.mjs';
 import errorHandler from './src/api/middleware/errorHandler.mjs';
+import { authenticationHandler, unauthorizedHandler, jwtExtractionHandler } from './src/api/middleware/authenticationHandler.mjs';
 
 mongoose.connect('mongodb://localhost:27017/bitsocial', { useNewUrlParser: true, useUnifiedTopology: true });
 const app = new Koa();
 
 app.use(errorHandler());
+app.use(unauthorizedHandler());
+app.use(authenticationHandler());
 app.use(bodyParser());
+app.use(jwtExtractionHandler());
 app.use(koaHelmet());
 app.use(cors());
 
 // TODO Handle auth
 const authRouter = new Router();
 authRouter.get('/profiles', async (ctx) => {
-  ctx.body = 'Hi';
+  ctx.body = ctx.state.profile;
 });
 authRouter.post('/profiles', async (ctx) => {
   ctx.body = await createProfile(ctx.request.body);

@@ -404,6 +404,113 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "/item/{id}/likes",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status test\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{user_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{api_url}}/items/{{item1}}/likes",
+					"host": [
+						"{{api_url}}"
+					],
+					"path": [
+						"items",
+						"{{item1}}",
+						"likes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/item/{id}/likes/count",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status test\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{user_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{api_url}}/items/{{item1}}/likes/count",
+					"host": [
+						"{{api_url}}"
+					],
+					"path": [
+						"items",
+						"{{item1}}",
+						"likes",
+						"count"
+					]
+				}
+			},
+			"response": []
 		}
 	],
 	"variable": [

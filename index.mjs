@@ -27,15 +27,15 @@ authRouter.get('/profiles', async (ctx) => {
 });
 authRouter.post('/profiles', async (ctx) => {
   await createProfile(ctx.state.user.sub);
-  ctx.res.statusCode = 202;
+  ctx.res.statusCode = 201;
 });
 authRouter.post('/items', async (ctx) => {
   await createItem(ctx.request.body);
-  ctx.res.statusCode = 202;
+  ctx.res.statusCode = 201;
 });
 authRouter.post('/items/:itemId/likes', async (ctx) => {
   await like(ctx.state.profile._id, ctx.params.itemId);
-  ctx.res.statusCode = 202;
+  ctx.res.statusCode = 201;
 });
 
 app.use(authRouter.routes());

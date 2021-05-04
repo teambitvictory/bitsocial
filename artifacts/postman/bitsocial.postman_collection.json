@@ -164,7 +164,7 @@
 					"script": {
 						"exec": [
 							"pm.test(\"Status test\", function () {",
-							"    pm.response.to.have.status(200);",
+							"    pm.response.to.have.status(201);",
 							"});",
 							""
 						],
@@ -195,15 +195,6 @@
 				},
 				"method": "POST",
 				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"id\": \"{{userid}}\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
 				"url": {
 					"raw": "{{api_url}}/profiles",
 					"host": [
@@ -286,16 +277,9 @@
 					"script": {
 						"exec": [
 							"pm.test(\"Status test\", function () {",
-							"    pm.response.to.have.status(200);",
+							"    pm.response.to.have.status(201);",
 							"});",
 							"",
-							"const jsonData = pm.response.json();",
-							"pm.test(\"Check response\", function () {",
-							"    pm.expect(jsonData.timestamp).to.be.greaterThan(100);",
-							"    pm.expect(jsonData.changes).to.be.not.null;",
-							"})",
-							"",
-							"pm.collectionVariables.set(\"flowPulledAt\", jsonData.timestamp)",
 							""
 						],
 						"type": "text/javascript"
@@ -376,16 +360,9 @@
 					"script": {
 						"exec": [
 							"pm.test(\"Status test\", function () {",
-							"    pm.response.to.have.status(200);",
+							"    pm.response.to.have.status(201);",
 							"});",
 							"",
-							"const jsonData = pm.response.json();",
-							"pm.test(\"Check response\", function () {",
-							"    pm.expect(jsonData.timestamp).to.be.greaterThan(100);",
-							"    pm.expect(jsonData.changes).to.be.not.null;",
-							"})",
-							"",
-							"pm.collectionVariables.set(\"flowPulledAt\", jsonData.timestamp)",
 							""
 						],
 						"type": "text/javascript"

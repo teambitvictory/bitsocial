@@ -23,4 +23,15 @@ const like = async (profileId, value) => {
   await profile.save();
 };
 
-export { createItem, like };
+const getLikesForItem = async (reqItemId) => {
+  const schema = Joi.string().alphanum().required();
+  const itemId = await schema.validateAsync(reqItemId);
+  const item = await Item.findOne({ itemId }, 'likedBy');
+  return item.likedBy;
+};
+
+const countLikesForItem = async (reqItemId) => (await getLikesForItem(reqItemId)).length;
+
+export {
+  createItem, like, getLikesForItem, countLikesForItem,
+};

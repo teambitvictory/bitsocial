@@ -4,7 +4,7 @@ import koaHelmet from 'koa-helmet';
 import cors from '@koa/cors';
 import Router from '@koa/router';
 import mongoose from 'mongoose';
-import { createProfile } from './src/lib/services/ProfileService.mjs';
+import { createProfile, getProfileByUserId } from './src/lib/services/ProfileService.mjs';
 import { like, createItem } from './src/lib/services/ItemService.mjs';
 import errorHandler from './src/api/middleware/errorHandler.mjs';
 import { authenticationHandler, unauthorizedHandler, jwtExtractionHandler } from './src/api/middleware/authenticationHandler.mjs';
@@ -23,16 +23,19 @@ app.use(cors());
 // TODO Handle auth
 const authRouter = new Router();
 authRouter.get('/profiles', async (ctx) => {
-  ctx.body = ctx.state.profile;
+  ctx.body = await getProfileByUserId(ctx.state.user.sub);
 });
 authRouter.post('/profiles', async (ctx) => {
-  ctx.body = await createProfile(ctx.request.body);
+  await createProfile(ctx.state.user.sub);
+  ctx.res.statusCode = 202;
 });
 authRouter.post('/items', async (ctx) => {
-  ctx.body = await createItem(ctx.request.body);
+  await createItem(ctx.request.body);
+  ctx.res.statusCode = 202;
 });
 authRouter.post('/items/:itemId/likes', async (ctx) => {
-  ctx.body = await like('Stefan', ctx.params.itemId);
+  await like(ctx.state.profile._id, ctx.params.itemId);
+  ctx.res.statusCode = 202;
 });
 
 app.use(authRouter.routes());

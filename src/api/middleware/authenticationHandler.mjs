@@ -16,7 +16,7 @@ const authenticationHandler = () => jwt({
 const jwtExtractionHandler = () => async (ctx, next) => {
   const profile = await getProfileByUserId(ctx.state.user.sub);
   ctx.state.profile = profile;
-  next();
+  await next();
 };
 
 const unauthorizedHandler = () => async (ctx, next) => {

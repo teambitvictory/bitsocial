@@ -14,7 +14,7 @@ const createItem = async (payload) => {
 const like = async (profileId, value) => {
   const schema = Joi.string().alphanum().required();
   const itemId = await schema.validateAsync(value);
-  const profile = await Profile.findOne({ profileId });
+  const profile = await Profile.findOne({ _id: profileId });
   const item = await Item.findOneAndUpdate(
     { itemId },
     { $push: { likedBy: profile._id } },

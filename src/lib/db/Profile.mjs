@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 
 const ProfileSchema = mongoose.Schema({
-  profileId: {
+  userId: {
     type: String,
     required: true,
     index: true,

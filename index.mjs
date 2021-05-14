@@ -25,7 +25,7 @@ app.use(cors());
 // TODO Handle auth
 const authRouter = new Router();
 authRouter.get('/profiles', async (ctx) => {
-  ctx.body = [await getProfileByUserId(ctx.state.user.sub)];
+  ctx.body = await getProfileByUserId(ctx.state.user.sub);
 });
 authRouter.post('/profiles', async (ctx) => {
   await createProfile(ctx.state.user.sub);

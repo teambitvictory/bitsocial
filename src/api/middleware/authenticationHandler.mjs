@@ -10,7 +10,7 @@ const authenticationHandler = () => jwt({
     cacheMaxAge: 18000000, // 5 hour
   }),
   audience: 'bitsocial',
-  issuer: 'http://auth.habyte.com',
+  issuer: 'auth.habyte.com',
 });
 
 const jwtExtractionHandler = () => async (ctx, next) => {

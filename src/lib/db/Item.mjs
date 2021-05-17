@@ -6,6 +6,7 @@ const ItemSchema = new mongoose.Schema({
     required: true,
     index: true,
     unique: true,
+    dropDups: true,
   },
   likedBy: [{
     type: mongoose.Schema.ObjectId,

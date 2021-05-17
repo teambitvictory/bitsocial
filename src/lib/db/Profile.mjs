@@ -6,6 +6,7 @@ const ProfileSchema = mongoose.Schema({
     required: true,
     index: true,
     unique: true,
+    dropDups: true,
   },
   likedItems: [{
     type: mongoose.Schema.ObjectId,

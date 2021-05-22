@@ -1,37 +1,61 @@
 import Joi from 'joi';
 import Item from '../db/Item.mjs';
-import Profile from '../db/Profile.mjs';
+import Like from '../db/Like.mjs';
+import ConfigTypes from '../types/ConfigTypes.mjs';
+import getConfig from './ConfigService.mjs';
 
 const createItem = async (payload) => {
   const schema = Joi.object({
     id: Joi.string().alphanum().required(),
   });
-  const value = await schema.validateAsync(payload);
-  const newItem = new Item({ itemId: value.id });
+  const { id } = await schema.validateAsync(payload);
+  const newItem = new Item({ itemId: id });
   return newItem.save();
 };
 
-const like = async (profileId, value) => {
-  const schema = Joi.string().alphanum().required();
-  const itemId = await schema.validateAsync(value);
-  const profile = await Profile.findOne({ _id: profileId });
-  const item = await Item.findOneAndUpdate(
-    { itemId },
-    { $push: { likedBy: profile._id } },
+const like = async (user, payload) => {
+  const allowedTypes = Object.values(getConfig(ConfigTypes.LIKE_TYPES))
+    .map((likeType) => likeType.name);
+  const schema = Joi.object({
+    itemId: Joi.string().alphanum().required(),
+    type: Joi.string().valid(...allowedTypes).required(),
+  });
+  const { itemId, type } = await schema.validateAsync(payload);
+  const item = await Item.findOne({ itemId });
+
+  const query = {
+    user: user._id,
+    item: item._id,
+  };
+
+  // TODO: Make it configurable if multiple different like types are allowed
+  await Like.findOneAndUpdate(
+    query,
+    {
+      ...query,
+      type,
+    },
+    {
+      upsert: true,
+    },
   );
-  profile.likedItems.push(item._id);
-  await profile.save();
 };
 
-const getLikesForItem = async (reqItemId) => {
+const getLikes = async (query) => Like.find(query);
+
+const getLikesForItem = async (itemId) => {
   const schema = Joi.string().alphanum().required();
-  const itemId = await schema.validateAsync(reqItemId);
-  const item = await Item.findOne({ itemId }, 'likedBy');
-  return item.likedBy;
+  const validatedItemId = await schema.validateAsync(itemId);
+  const item = await Item.findOne({ itemId: validatedItemId });
+  return getLikes({
+    item: item._id,
+  });
 };
 
-const countLikesForItem = async (reqItemId) => (await getLikesForItem(reqItemId)).length;
+const getLikesForUser = async (user) => getLikes({
+  user: user._id,
+});
 
 export {
-  createItem, like, getLikesForItem, countLikesForItem,
+  createItem, like, getLikesForItem, getLikesForUser,
 };

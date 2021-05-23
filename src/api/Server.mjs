@@ -8,7 +8,13 @@ import { authenticationHandler, unauthorizedHandler, jwtExtractionHandler } from
 import getAuthRouter from './routing/AuthenticatedRoutes.mjs';
 
 const startServer = () => {
-  mongoose.connect('mongodb://localhost:27017/bitsocial', { useNewUrlParser: true, useUnifiedTopology: true });
+  const {
+    DB_PROTOCOL = 'mongodb',
+    DB_HOST = 'localhost',
+    DB_PORT = '27017',
+    DB_NAME = 'bitsocial',
+  } = process.env;
+  mongoose.connect(`${DB_PROTOCOL}://${DB_HOST}:${DB_PORT}/${DB_NAME}`, { useNewUrlParser: true, useUnifiedTopology: true });
   const app = new Koa();
 
   app.use(errorHandler());
@@ -23,7 +29,10 @@ const startServer = () => {
   app.use(authRouter.routes());
   app.use(authRouter.allowedMethods());
 
-  app.listen(3000);
+  const port = process.env.PORT || 3000;
+  app.listen(port);
+  // eslint-disable-next-line
+  console.log(`bitsocial listening on port ${port}`);
 };
 
 export default startServer;

@@ -4,14 +4,14 @@ import { getUserById } from '../../lib/services/UserService.mjs';
 
 const authenticationHandler = () => jwt({
   secret: koaJwtSecret({
-    jwksUri: 'http://localhost:1672/system/jwk',
+    jwksUri: process.env.JWKS_URI,
     cache: true,
     cacheMaxEntries: 5,
     cacheMaxAge: 18000000, // 5 hour
   }),
   key: 'jwtPayload',
-  audience: 'bitsocial',
-  issuer: 'auth.habyte.com',
+  audience: process.env.JWT_AUDIENCE,
+  issuer: process.env.JWT_ISSUER,
 });
 
 const jwtExtractionHandler = () => async (ctx, next) => {

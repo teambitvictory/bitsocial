@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 
-const ItemSchema = new mongoose.Schema({
-  itemId: {
+const UserSchema = mongoose.Schema({
+  userId: {
     type: String,
     required: true,
     index: true,
@@ -10,6 +10,6 @@ const ItemSchema = new mongoose.Schema({
   },
 });
 
-const Item = mongoose.model('Item', ItemSchema);
+const User = mongoose.model('User', UserSchema);
 
-export default Item;
+export default User;

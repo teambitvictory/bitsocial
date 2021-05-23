@@ -1,6 +1,6 @@
 import { koaJwtSecret } from 'jwks-rsa';
 import jwt from 'koa-jwt';
-import { getProfileByUserId } from '../../lib/services/ProfileService.mjs';
+import { getUserById } from '../../lib/services/UserService.mjs';
 
 const authenticationHandler = () => jwt({
   secret: koaJwtSecret({
@@ -9,13 +9,14 @@ const authenticationHandler = () => jwt({
     cacheMaxEntries: 5,
     cacheMaxAge: 18000000, // 5 hour
   }),
+  key: 'jwtPayload',
   audience: 'bitsocial',
   issuer: 'auth.habyte.com',
 });
 
 const jwtExtractionHandler = () => async (ctx, next) => {
-  const profile = await getProfileByUserId(ctx.state.user.sub);
-  ctx.state.profile = profile;
+  const user = await getUserById(ctx.state.jwtPayload.sub);
+  ctx.state.user = user;
   await next();
 };
 

@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "77ea5b4f-309e-402e-ac6d-a9f8980b348b",
+		"_postman_id": "732769e9-56cc-442e-8a09-4996e29e84a7",
 		"name": "bitsocial",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -157,7 +157,7 @@
 			"response": []
 		},
 		{
-			"name": "/profile",
+			"name": "Register user",
 			"event": [
 				{
 					"listen": "test",
@@ -196,19 +196,19 @@
 				"method": "POST",
 				"header": [],
 				"url": {
-					"raw": "{{api_url}}/profiles",
+					"raw": "{{api_url}}/users",
 					"host": [
 						"{{api_url}}"
 					],
 					"path": [
-						"profiles"
+						"users"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "/profile",
+			"name": "Get user profile",
 			"event": [
 				{
 					"listen": "test",
@@ -250,7 +250,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"id\": \"{{userid}}\"\r\n}",
+					"raw": "",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -258,19 +258,19 @@
 					}
 				},
 				"url": {
-					"raw": "{{api_url}}/profiles",
+					"raw": "{{api_url}}/me",
 					"host": [
 						"{{api_url}}"
 					],
 					"path": [
-						"profiles"
+						"me"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "/item",
+			"name": "Create item",
 			"event": [
 				{
 					"listen": "test",
@@ -353,7 +353,7 @@
 			"response": []
 		},
 		{
-			"name": "/item/{id}/like",
+			"name": "Like",
 			"event": [
 				{
 					"listen": "test",
@@ -391,6 +391,15 @@
 				},
 				"method": "POST",
 				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"type\": \"like\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
 				"url": {
 					"raw": "{{api_url}}/items/{{item1}}/likes",
 					"host": [
@@ -406,7 +415,7 @@
 			"response": []
 		},
 		{
-			"name": "/item/{id}/likes",
+			"name": "Get likes",
 			"event": [
 				{
 					"listen": "test",
@@ -459,7 +468,7 @@
 			"response": []
 		},
 		{
-			"name": "/item/{id}/likes/count",
+			"name": "Get like count",
 			"event": [
 				{
 					"listen": "test",
@@ -507,6 +516,401 @@
 						"{{item1}}",
 						"likes",
 						"count"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create friend request",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{user_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{api_url}}/users/7k17CEhB0jcMxD2i/friends",
+					"host": [
+						"{{api_url}}"
+					],
+					"path": [
+						"users",
+						"7k17CEhB0jcMxD2i",
+						"friends"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create second test user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const jsonData = pm.response.json();",
+							"",
+							"pm.collectionVariables.set(\"user2_token\", jsonData.accessToken);",
+							"pm.collectionVariables.set(\"user2_refresh_token\", jsonData.refreshToken);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"othermail2@example.com\",\n    \"password\": \"{{register_user_pw}}\",\n    \"name\": \"Other user\",\n    \"termsLastAcceptedAt\": {{now}},\n    \"sendAnalyticalData\": true\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{auth_url}}/register",
+					"host": [
+						"{{auth_url}}"
+					],
+					"path": [
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Register second user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{user2_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{api_url}}/users",
+					"host": [
+						"{{api_url}}"
+					],
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status test\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"",
+							"const jsonData = pm.response.json();",
+							"",
+							"pm.test(\"Check response\", function () {",
+							"    pm.expect(jsonData.id).to.be.a('string');",
+							"    pm.expect(jsonData.role).to.eq('DEFAULT');",
+							"    pm.expect(jsonData.status).to.eq('ACTIVE');",
+							"    pm.expect(jsonData.email).to.eq(pm.environment.get(\"register_user_email\"));",
+							"    pm.expect(jsonData.name).to.be.a('string');",
+							"    pm.expect(jsonData.password).to.be.a('string');",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{user2_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{auth_url}}/user",
+					"host": [
+						"{{auth_url}}"
+					],
+					"path": [
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get friend requests",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{user2_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{api_url}}/me/friends/requests",
+					"host": [
+						"{{api_url}}"
+					],
+					"path": [
+						"me",
+						"friends",
+						"requests"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get friends",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{user_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{api_url}}/me/friends",
+					"host": [
+						"{{api_url}}"
+					],
+					"path": [
+						"me",
+						"friends"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Accept a friend request",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{user2_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"accepted\": true\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{api_url}}/me/friends/requests/60a97f12a3f27e232e7fbdc9",
+					"host": [
+						"{{api_url}}"
+					],
+					"path": [
+						"me",
+						"friends",
+						"requests",
+						"60a97f12a3f27e232e7fbdc9"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Decline/remove a friend request",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{user_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"accepted\": false\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{api_url}}/me/friends/requests/60a97f12a3f27e232e7fbdc9",
+					"host": [
+						"{{api_url}}"
+					],
+					"path": [
+						"me",
+						"friends",
+						"requests",
+						"60a97f12a3f27e232e7fbdc9"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Remove a friend",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{user_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{api_url}}/me/friends/60a97e328964222280314992",
+					"host": [
+						"{{api_url}}"
+					],
+					"path": [
+						"me",
+						"friends",
+						"60a97e328964222280314992"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get likes of user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status test\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{user_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{api_url}}/me/likes",
+					"host": [
+						"{{api_url}}"
+					],
+					"path": [
+						"me",
+						"likes"
 					]
 				}
 			},
@@ -716,6 +1120,14 @@
 		},
 		{
 			"key": "item1",
+			"value": ""
+		},
+		{
+			"key": "user2_token",
+			"value": ""
+		},
+		{
+			"key": "user2_refresh_token",
 			"value": ""
 		}
 	]

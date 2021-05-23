@@ -14,5 +14,6 @@ module.exports = {
     'import/prefer-default-export': 0,
     'import/extensions': 0,
     'no-underscore-dangle': 0,
+    'prefer-promise-reject-errors': 0,
   },
 };

@@ -2,7 +2,8 @@
 
 bitsocial is a reusable microservices that allows an easy integration of social features into every app.
 The microservice handles functionality:
-​- Profile management
+
+- Profile management
 - Friend management
 - Content interactions (like, dislike, ...)
 

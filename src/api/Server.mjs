@@ -6,6 +6,7 @@ import mongoose from 'mongoose';
 import errorHandler from './middleware/errorHandler.mjs';
 import { authenticationHandler, unauthorizedHandler, jwtExtractionHandler } from './middleware/authenticationHandler.mjs';
 import getAuthRouter from './routing/AuthenticatedRoutes.mjs';
+import initKafkaConsumers from '../consumer/KafkaConsumer.mjs';
 
 const startServer = () => {
   const {
@@ -28,6 +29,8 @@ const startServer = () => {
   const authRouter = getAuthRouter();
   app.use(authRouter.routes());
   app.use(authRouter.allowedMethods());
+
+  initKafkaConsumers();
 
   const port = process.env.PORT || 3000;
   app.listen(port);

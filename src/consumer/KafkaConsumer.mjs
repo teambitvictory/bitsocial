@@ -14,8 +14,8 @@ const initKafkaConsumers = async () => {
   await consumer.run({
     eachMessage: async ({ topic, message }) => {
       const body = JSON.parse(message.value.toString());
-      if (topic === 'USER_UPDATE' && body.updateType === 'USER_CREATED') {
-        const userId = body.user.id;
+      if (topic === 'USER_UPDATE' && body.event === 'CREATE') {
+        const userId = body.id;
         createUser(userId);
       }
     },
